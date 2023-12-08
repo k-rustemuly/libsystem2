@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\Role;
 use App\MoonShine\Pages\ChooseRole;
+use App\MoonShine\Resources\OrganizationResource;
 use Illuminate\Support\Facades\Vite;
 use MoonShine\Providers\MoonShineApplicationServiceProvider;
 use MoonShine\Menu\MenuGroup;
@@ -34,6 +36,9 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
     protected function menu(): array
     {
         return [
+            MenuItem::make(__('moonshine::ui.resource.organizations'), new OrganizationResource())
+                ->canSee(fn() => session('selected_admin')->role_id == Role::SUPER_ADMIN),
+
             MenuGroup::make(static fn() => __('moonshine::ui.resource.system'), [
                 MenuItem::make(
                     static fn() => __('moonshine::ui.resource.admins_title'),
