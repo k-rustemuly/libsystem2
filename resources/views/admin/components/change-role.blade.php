@@ -8,15 +8,14 @@
     'after',
 ])
     {{ $before ?? '' }}
-
         <div class="menu-profile">
             <a href="{{ $route }}"
-               class="menu-profile-main"
+                class="menu-profile-main"
             >
                 <div class="menu-profile-photo">
                     <img class="h-full w-full object-cover"
-                         src="{{ $avatar }}"
-                         alt="{{ $nameOfUser }}"
+                        src="{{ $avatar }}"
+                        alt="{{ $nameOfUser }}"
                     />
                 </div>
                 <div class="menu-profile-info">
@@ -26,8 +25,8 @@
             </a>
 
             <a href="{{ $toRoute }}"
-               class="menu-profile-exit"
-               title="Logout"
+                class="menu-profile-exit"
+                title="Logout"
             >
                 <x-moonshine::icon
                     icon="heroicons.arrow-path-rounded-square"
@@ -35,5 +34,5 @@
                     size="6"
                 />
             </a>
-        </div>
+    </div>
     {{ $after ?? '' }}

@@ -60,7 +60,7 @@ class Book extends Model implements HasMedia
 
     public function getIsbnNameAttribute()
     {
-        return trans('moonshine::ui.resource.book_isbn_name', [
+        return __('moonshine::ui.resource.book_isbn_name', [
             'name' => $this->name,
             'isbn' => $this->isbn
         ]);

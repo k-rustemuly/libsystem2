@@ -34,6 +34,7 @@ return [
     '404' => 'Хьюстон! У нас проблема - страница не найдена',
     'copied' => 'Скопировано!',
     'access_denied' => 'У вас нет прав!',
+    'phone_number' => 'Номер телефона',
     'notifications' => [
         'title' => 'Уведомления',
         'mark_as_read_all' => 'Все прочитано',
@@ -66,6 +67,7 @@ return [
         'choose_role' => 'Выберите роль',
         'choose' => 'Выбрать',
         'organizations' => 'Организации',
+        'organization_types' => 'Типы организации',
         'admins' => 'Администраторы',
         'users' => 'Пользователи',
         'categories' => 'Категории',
