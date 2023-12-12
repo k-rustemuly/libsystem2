@@ -9,7 +9,7 @@ use App\Models\OrganizationBook;
 use App\MoonShine\Pages\OrganizationBook\OrganizationBookIndexPage;
 use App\MoonShine\Pages\OrganizationBook\OrganizationBookFormPage;
 use App\MoonShine\Pages\OrganizationBook\OrganizationBookDetailPage;
-
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Resources\ModelResource;
 
 class OrganizationBookResource extends ModelResource
@@ -17,6 +17,21 @@ class OrganizationBookResource extends ModelResource
     protected string $model = OrganizationBook::class;
 
     protected string $title = 'OrganizationBooks';
+
+    protected array $with = [
+        'book',
+        'book.publishingHouse',
+        'book.language',
+        'book.category',
+        'book.schoolClass',
+    ];
+
+    public function query(): Builder
+    {
+        return parent::query()
+            ->where('organization_id', session('selected_admin')?->organization_id);
+
+    }
 
     public function pages(): array
     {
