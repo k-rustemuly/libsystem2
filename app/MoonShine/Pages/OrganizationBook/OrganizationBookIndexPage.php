@@ -8,7 +8,15 @@ use App\MoonShine\Components\Cards;
 use MoonShine\Buttons\DeleteButton;
 use MoonShine\Buttons\DetailButton;
 use MoonShine\Buttons\EditButton;
+use MoonShine\Buttons\ExportButton;
+use MoonShine\Buttons\FiltersButton;
+use MoonShine\Buttons\ImportButton;
+use MoonShine\Components\ActionGroup;
+use MoonShine\Decorations\Column;
+use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
+use MoonShine\Decorations\Grid;
+use MoonShine\Decorations\LineBreak;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Preview;
 use MoonShine\Fields\Image;
@@ -20,10 +28,11 @@ class OrganizationBookIndexPage extends IndexPage
     {
         return [
             Image::make('book.cover'),
-            Preview::make('book.category.name')->badge('success'),
+            Preview::make('bookStorageType', 'bookStorageType', fn($item) => $item->bookStorageType->name)->badge(fn($item) => $item->id == 1 ? 'green' : 'info'),
             Hidden::make('book.name'),
             Hidden::make('book.isbn'),
             Hidden::make(__('moonshine::ui.resource.count'), 'count'),
+            Hidden::make(__('moonshine::ui.resource.category'), 'book.category.name'),
             Hidden::make(__('moonshine::ui.resource.published_year'), 'book.published_year'),
             Hidden::make(__('moonshine::ui.resource.school_class'), 'book.schoolClass.name'),
             Hidden::make(__('moonshine::ui.resource.language'), 'book.language.name'),
@@ -58,11 +67,11 @@ class OrganizationBookIndexPage extends IndexPage
                     ->name($cardName)
                     ->fields(fn () => $this->getResource()->getIndexFields()->toArray())
                     ->cast($this->getResource()->getModelCast())
-                    ->badge('book.category.name')
+                    ->badge('bookStorageType')
                     ->thumbnail('book.cover')
                     ->title('book.name')
                     ->subTitle('book.isbn')
-                    ->columnSpan(3)
+                    ->columnSpan(4)
                     ->overlay(true)
                     ->buttons([
                         ...$this->getResource()->getIndexButtons(),
@@ -78,6 +87,41 @@ class OrganizationBookIndexPage extends IndexPage
     {
         return [
             ...parent::bottomLayer()
+        ];
+    }
+
+    protected function actionButtons(): array
+    {
+        return [
+            Grid::make([
+                Column::make([
+                    Flex::make([
+                        ActionGroup::make([
+                            ...$this->getResource()->actions(),
+                        ]),
+                    ])->justifyAlign('start'),
+
+                    ActionGroup::make()->when(
+                        $this->getResource()->filters() !== [],
+                        fn (ActionGroup $group): ActionGroup => $group->add(
+                            FiltersButton::for($this->getResource())
+                        )
+                    )->when(
+                        ! is_null($export = $this->getResource()->export()),
+                        fn (ActionGroup $group): ActionGroup => $group->add(
+                            ExportButton::for($this->getResource(), $export)
+                        ),
+                    )->when(
+                        ! is_null($import = $this->getResource()->import()),
+                        fn (ActionGroup $group): ActionGroup => $group->add(
+                            ImportButton::for($this->getResource(), $import)
+                        ),
+                    ),
+                ])->customAttributes([
+                    'class' => 'flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap',
+                ]),
+            ]),
+            LineBreak::make(),
         ];
     }
 }

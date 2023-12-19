@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Card;
 
+use Illuminate\Support\Facades\Log;
 use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;

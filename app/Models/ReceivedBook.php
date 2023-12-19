@@ -13,6 +13,7 @@ class ReceivedBook extends Model
     protected $fillable = [
         'organization_id',
         'book_id',
+        'book_storage_type_id',
         'year',
         'count'
     ];
@@ -25,5 +26,10 @@ class ReceivedBook extends Model
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);
+    }
+
+    public function bookStorageType(): BelongsTo
+    {
+        return $this->belongsTo(BookStorageType::class);
     }
 }

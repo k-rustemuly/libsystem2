@@ -72,4 +72,9 @@ class Book extends Model implements HasMedia
         ]);
     }
 
+    public static function search($query)
+    {
+        return self::where('name', 'like', "%$query%")->orWhere('isbn', 'like', "%$query%");
+    }
+
 }

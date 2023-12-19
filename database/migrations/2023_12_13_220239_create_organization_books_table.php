@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('received_books', function (Blueprint $table) {
+        Schema::create('organization_books', function (Blueprint $table) {
             $table->id();
 
             $table->foreignIdFor(Organization::class)
@@ -32,13 +32,12 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->year('year')
-                ->default(1950);
-
             $table->unsignedInteger('count')
                 ->default(0);
 
             $table->timestamps();
+
+            $table->unique(['organization_id', 'book_id']);
         });
     }
 
@@ -47,6 +46,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('received_books');
+        Schema::dropIfExists('organization_books');
     }
 };

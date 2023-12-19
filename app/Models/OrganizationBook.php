@@ -13,6 +13,7 @@ class OrganizationBook extends Model
     protected $fillable = [
         'organization_id',
         'book_id',
+        'book_storage_type_id',
         'count'
     ];
 
@@ -26,4 +27,18 @@ class OrganizationBook extends Model
         return $this->belongsTo(Book::class);
     }
 
+    public function bookStorageType(): BelongsTo
+    {
+        return $this->belongsTo(BookStorageType::class);
+    }
+
+    public function receivedBooks()
+    {
+        return $this->hasMany(ReceivedBook::class, 'book_id', 'book_id');
+    }
+
+    public function inventory()
+    {
+        return $this->hasMany(OrganizationBookInventory::class, 'book_id', 'book_id');
+    }
 }

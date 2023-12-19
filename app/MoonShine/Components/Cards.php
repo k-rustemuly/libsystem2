@@ -56,18 +56,17 @@ final class Cards extends IterableComponent
     /**
      * @throws Throwable
      */
-    protected function getFilledFields(array $raw = [], mixed $casted = null, int $index = 0): Fields
-    {
-        $fields = $this->getFields();
+    protected function getFilledFields(
+        array $raw = [],
+        mixed $casted = null,
+        int $index = 0,
+        ?Fields $preparedFields = null
+    ): Fields {
+        $fields = $preparedFields ?? $this->getFields();
 
-        if (is_closure($this->fieldsClosure)) {
-            $fields->fill($raw, $casted, $index);
-
-            return $fields;
-        }
-
-        return $fields->fillCloned($raw, $casted, $index);
+        return $fields->fillCloned($raw, $casted, $index, $fields);
     }
+
 
     public function overlay(): static
     {
@@ -129,11 +128,13 @@ final class Cards extends IterableComponent
             'title' => $this->title,
             'subTitle' => $this->subTitle,
         ];
-        return $this->getItems()->filter()->map(function (mixed $data, $index) use($properties): CardItem {
+        $cardFields = $this->getFields()->onlyFields();
+
+        return $this->getItems()->filter()->map(function (mixed $data, $index) use($properties, $cardFields): CardItem {
             $casted = $this->castData($data);
             $raw = $this->unCastData($data);
 
-            $fields = $this->getFilledFields($raw, $casted, $index);
+            $fields = $this->getFilledFields($raw, $casted, $index, $cardFields);
 
             if (! is_null($this->getName())) {
                 $fields->onlyFields()->each(
