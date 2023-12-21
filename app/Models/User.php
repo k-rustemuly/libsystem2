@@ -79,4 +79,9 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasMany(Admin::class);
     }
+
+    public static function search($query)
+    {
+        return self::where('name', 'like', "%$query%")->orWhere('iin', 'like', "%$query%");
+    }
 }

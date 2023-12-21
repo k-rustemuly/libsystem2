@@ -133,4 +133,5 @@ return [
             'rule-name' => 'custom-message',
         ],
     ],
+    'user_id_unique' => 'Пользователь с таким ID уже связан с организацией.'
 ];

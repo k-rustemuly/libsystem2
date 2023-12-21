@@ -11,12 +11,16 @@ use MoonShine\Buttons\EditButton;
 use MoonShine\Buttons\ExportButton;
 use MoonShine\Buttons\FiltersButton;
 use MoonShine\Buttons\ImportButton;
+use MoonShine\Buttons\MassDeleteButton;
 use MoonShine\Components\ActionGroup;
+use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Flex;
 use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
 use MoonShine\Decorations\LineBreak;
+use MoonShine\Decorations\Tab;
+use MoonShine\Decorations\Tabs;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Preview;
 use MoonShine\Fields\Image;
@@ -60,7 +64,6 @@ class OrganizationBookIndexPage extends IndexPage
         $items = $this->getResource()->isPaginationUsed()
             ? $this->getResource()->paginate()
             : $this->getResource()->items();
-
         return [
             Fragment::make([
                 Cards::make(items: $items)

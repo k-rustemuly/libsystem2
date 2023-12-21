@@ -16,7 +16,10 @@ class OrganizationBookInventoryResource extends ModelResource
 {
     protected string $model = OrganizationBookInventory::class;
 
-    protected string $title = 'OrganizationBookInventories';
+    public function getActiveActions(): array
+    {
+        return ['view'];
+    }
 
     public function fields(): array
     {

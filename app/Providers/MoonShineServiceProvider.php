@@ -13,6 +13,7 @@ use App\MoonShine\Resources\BookStorageTypeResource;
 use App\MoonShine\Resources\CategoryResource;
 use App\MoonShine\Resources\LanguageResource;
 use App\MoonShine\Resources\OrganizationBookResource;
+use App\MoonShine\Resources\OrganizationReaderResource;
 use App\MoonShine\Resources\OrganizationResource;
 use App\MoonShine\Resources\OrganizationTypeResource;
 use App\MoonShine\Resources\PublishingHouseResource;
@@ -85,6 +86,9 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
                 ->canSee(fn() => session('selected_admin')->role_id == Role::LIBRARIAN),
 
             MenuItem::make(__('moonshine::ui.resource.received-books'), new ReceivedBookResource())
+                ->canSee(fn() => session('selected_admin')->role_id == Role::LIBRARIAN),
+
+            MenuItem::make(__('moonshine::ui.resource.readers'), new OrganizationReaderResource())
                 ->canSee(fn() => session('selected_admin')->role_id == Role::LIBRARIAN),
 
             MenuGroup::make(static fn() => __('moonshine::ui.resource.system'), [

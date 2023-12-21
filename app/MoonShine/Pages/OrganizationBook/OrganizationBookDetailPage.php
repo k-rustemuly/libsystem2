@@ -121,7 +121,6 @@ class OrganizationBookDetailPage extends DetailPage
 
         $outsideFields = $this->getResource()->getDetailFields(true);
 
-
         $tabs = [];
         if ($outsideFields->isNotEmpty()) {
 
