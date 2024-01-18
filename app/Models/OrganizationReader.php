@@ -25,4 +25,9 @@ class OrganizationReader extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getPreviewNameAttribute()
+    {
+        return $this->user->name;
+    }
 }

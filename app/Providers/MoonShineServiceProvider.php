@@ -12,6 +12,7 @@ use App\MoonShine\Resources\BookResource;
 use App\MoonShine\Resources\BookStorageTypeResource;
 use App\MoonShine\Resources\CategoryResource;
 use App\MoonShine\Resources\LanguageResource;
+use App\MoonShine\Resources\OrganizationBookInventoryResource;
 use App\MoonShine\Resources\OrganizationBookResource;
 use App\MoonShine\Resources\OrganizationReaderResource;
 use App\MoonShine\Resources\OrganizationResource;
@@ -102,6 +103,9 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
                 ),
             ])
             ->canSee(fn() => session('selected_admin')->role_id == Role::SUPER_ADMIN),
+
+            MenuItem::make('000', new OrganizationBookInventoryResource())
+                ->canSee(fn() => false),
         ];
     }
 

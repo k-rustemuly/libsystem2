@@ -6,15 +6,24 @@ namespace App\MoonShine\Resources;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\OrganizationBookInventory;
-
+use App\MoonShine\Controllers\OrganizationBookController;
+use Illuminate\Support\Facades\Route;
+use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\FormBuilder;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Decorations\Block;
+use MoonShine\Fields\DateRange;
 use MoonShine\Fields\Hidden;
+use MoonShine\Fields\HiddenIds;
 use MoonShine\Fields\ID;
+use MoonShine\Fields\Relationships\BelongsTo;
+use MoonShine\Fields\Select;
 
 class OrganizationBookInventoryResource extends ModelResource
 {
     protected string $model = OrganizationBookInventory::class;
+
+    protected array $with = ['transaction'];
 
     public function getActiveActions(): array
     {
@@ -27,6 +36,7 @@ class OrganizationBookInventoryResource extends ModelResource
             Block::make([
                 ID::make()->sortable(),
                 Hidden::make(__('moonshine::ui.resource.barcode'), 'code'),
+                BelongsTo::make(__('moonshine::ui.resource.reader'), 'transaction',  fn($item) => $item->recipientable?->previewName, new OrganizationBookTransactionResource())
         ]),
         ];
     }
@@ -35,4 +45,41 @@ class OrganizationBookInventoryResource extends ModelResource
     {
         return [];
     }
+
+    public function indexButtons(): array
+    {
+        return [
+            ActionButton::make(__('moonshine::ui.resource.receive_to_reader'), item: $this->getModel())
+                ->inModal(
+                    title: __('moonshine::ui.resource.receive_to_reader'),
+                    content: fn (): string => (string) FormBuilder::make($this->route('organization_book.receive', $this->getModel()))
+                        ->submit(__('moonshine::ui.resource.receive'), ['class' => 'btn-primary btn-lg'])
+                        ->fields([
+                            HiddenIds::make(),
+
+                            Select::make('Читатель', 'user_id')
+                                ->searchable()
+                                ->required()
+                                ->async(asyncUrl: route('moonshine.users.search', [$this->uriKey()])),
+
+                            DateRange::make('Дата выдачи и возврата', 'date')
+                                ->fromTo('received_date', 'return_date')
+                                ->required()
+
+                        ])
+                        ->async()
+                )
+                ->bulk()
+                ->primary()
+                ->icon('heroicons.arrow-up-tray'),
+        ];
+    }
+
+    protected function resolveRoutes(): void
+    {
+        parent::resolveRoutes();
+
+        Route::post('/organization-book/receive', [OrganizationBookController::class, 'receive'])->name('organization_book.receive');
+    }
+
 }

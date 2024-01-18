@@ -7,16 +7,18 @@ namespace App\MoonShine\Resources;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\OrganizationReader;
 use App\MoonShine\Controllers\UserController;
+use App\MoonShine\Pages\OrganizationReader\OrganizationReaderDetailPage;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Decorations\Block;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 use MoonShine\Enums\PageType;
-use MoonShine\Fields\Hidden;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Preview;
 use MoonShine\Fields\Relationships\BelongsTo;
+use MoonShine\Pages\Crud\FormPage;
+use MoonShine\Pages\Crud\IndexPage;
 
 class OrganizationReaderResource extends ModelResource
 {
@@ -48,13 +50,37 @@ class OrganizationReaderResource extends ModelResource
                 Preview::make(__('moonshine::ui.resource.user_fullname'), 'user.name')->hideOnForm(),
                 Preview::make(__('moonshine::ui.resource.iin'), 'user.iin')->hideOnForm(),
                 Preview::make(__('moonshine::ui.resource.debt'), 'debt')->sortable()->hideOnForm(),
-                Hidden::make(column: 'organization_id')->setValue(session('selected_admin')?->organization_id)->hideOnIndex()->hideOnDetail(),
                 BelongsTo::make(__('moonshine::ui.resource.user_fullname'), 'user', fn($item) => $item->name. ' ('.$item->iin.')', new UserResource())
                     ->hideOnIndex()
+                    ->onBeforeApply(function(Model $item) {
+                        $item->organization_id = session('selected_admin')?->organization_id;
+                        return $item;
+                    })
                     ->asyncSearch(
                         url: route('moonshine.users.search', [$this->uriKey()])
                     )
+                    ->hideOnDetail()
             ]),
+        ];
+    }
+
+    public function pages(): array
+    {
+        return [
+            IndexPage::make($this->title()),
+            FormPage::make(
+                $this->getItemID()
+                    ? __('moonshine::ui.edit')
+                    : __('moonshine::ui.add')
+            ),
+            OrganizationReaderDetailPage::make(__('moonshine::ui.show')),
+        ];
+    }
+    public function search(): array
+    {
+        return [
+            'user.name',
+            'user.iin'
         ];
     }
 
@@ -63,16 +89,11 @@ class OrganizationReaderResource extends ModelResource
         return [
             'user_id' => [
                 'required',
-                Rule::unique('organization_readers', 'user_id')->where('organization_id', request('organization_id'))
+                Rule::unique('organization_readers', 'user_id')->where('organization_id', session('selected_admin')?->organization_id)
             ]
         ];
     }
 
-    /**
-     * Get custom messages for validator errors
-     *
-     * @return array<string, string|array<string, string>>
-     */
     public function validationMessages(): array
     {
         return [

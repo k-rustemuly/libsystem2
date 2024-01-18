@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\CustomModelRealation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OrganizationBook extends Model
 {
-    use HasFactory;
+    use HasFactory, CustomModelRealation;
 
     protected $fillable = [
         'organization_id',
@@ -39,6 +40,6 @@ class OrganizationBook extends Model
 
     public function inventory()
     {
-        return $this->hasMany(OrganizationBookInventory::class, 'book_id', 'book_id');
+        return $this->customHasMany(new OrganizationBookInventory(['organization_id' => $this->organization_id]), 'book_id', 'book_id');
     }
 }

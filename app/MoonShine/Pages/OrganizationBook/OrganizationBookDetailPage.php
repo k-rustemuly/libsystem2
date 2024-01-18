@@ -11,10 +11,7 @@ use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Components\TableBuilder;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Column;
-use MoonShine\Decorations\Divider;
-use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
-use MoonShine\Decorations\LineBreak;
 use MoonShine\Decorations\Tab;
 use MoonShine\Decorations\Tabs;
 use MoonShine\Fields\Hidden;
@@ -119,13 +116,10 @@ class OrganizationBookDetailPage extends DetailPage
             return $components;
         }
 
-        $outsideFields = $this->getResource()->getDetailFields(true);
-
+        $outsideFields = $this->getResource()->getDetailFields(onlyOutside: true);
         $tabs = [];
         if ($outsideFields->isNotEmpty()) {
-
-            foreach ($outsideFields->detailFields() as $field) {
-
+            foreach ($outsideFields as $field) {
                 $field->resolveFill(
                     $item?->attributesToArray() ?? [],
                     $item

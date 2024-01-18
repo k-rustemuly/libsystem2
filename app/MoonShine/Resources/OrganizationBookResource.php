@@ -74,6 +74,7 @@ class OrganizationBookResource extends ModelResource
                 ->success()
         ];
     }
+
     protected function resolveRoutes(): void
     {
         parent::resolveRoutes();

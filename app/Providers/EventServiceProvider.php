@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\OrganizationCreated;
+use App\Listeners\CreateOrganizationBookInventoryTable;
+use App\Listeners\CreateOrganizationBookTransactionTable;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,6 +21,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        OrganizationCreated::class => [
+            CreateOrganizationBookInventoryTable::class,
+            CreateOrganizationBookTransactionTable::class
+        ]
     ];
 
     /**

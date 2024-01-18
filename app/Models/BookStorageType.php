@@ -9,12 +9,12 @@ class BookStorageType extends LocalizableModel
     use HasFactory;
 
     /**
-     * Основной фонд
+     * @var BASIC Основной фонд
      */
     const BASIC = 1;
 
     /**
-     * Общий фонд
+     * @var GENERAL Общий фонд
      */
     const GENERAL = 2;
 
