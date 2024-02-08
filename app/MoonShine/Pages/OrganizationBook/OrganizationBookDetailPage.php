@@ -46,6 +46,8 @@ class OrganizationBookDetailPage extends DetailPage
             HasMany::make(__('moonshine::ui.resource.received-books'), 'receivedBooks', resource: new ReceivedBookResource(true, search: ['count', 'year']))
                 ->fields([
                     Hidden::make(__('moonshine::ui.resource.count'), 'count'),
+                    Hidden::make(__('moonshine::ui.resource.price'), 'price'),
+                    Hidden::make(__('moonshine::ui.resource.total'), 'total'),
                     Hidden::make(__('moonshine::ui.resource.received-year'), 'year'),
                     Hidden::make(__('moonshine::ui.resource.created_at'), 'created_at', fn($item) => $item->created_at->isoFormat('D MMMM YYYY, H:mm')),
                 ]),

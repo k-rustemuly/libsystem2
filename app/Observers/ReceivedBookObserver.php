@@ -7,6 +7,13 @@ use App\Models\ReceivedBook;
 
 class ReceivedBookObserver
 {
+    public function creating(ReceivedBook $receivedBook)
+    {
+        if($receivedBook->price) {
+            $receivedBook->total = $receivedBook->price * $receivedBook->count;
+        }
+    }
+
     public function created(ReceivedBook $receivedBook) {
         $book = OrganizationBook::firstOrNew(
             [

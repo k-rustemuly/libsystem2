@@ -15,7 +15,9 @@ class ReceivedBook extends Model
         'book_id',
         'book_storage_type_id',
         'year',
-        'count'
+        'price',
+        'count',
+        'total',
     ];
 
     public function organization(): BelongsTo

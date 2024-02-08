@@ -52,7 +52,7 @@ class OrganizationBookInventoryResource extends ModelResource
             ActionButton::make(__('moonshine::ui.resource.receive_to_reader'), item: $this->getModel())
                 ->inModal(
                     title: __('moonshine::ui.resource.receive_to_reader'),
-                    content: fn (): string => (string) FormBuilder::make($this->route('organization_book.receive', $this->getModel()))
+                    content: fn (): string => (string) FormBuilder::make($this->route('organization_book.receive', $this->uriKey()))
                         ->submit(__('moonshine::ui.resource.receive'), ['class' => 'btn-primary btn-lg'])
                         ->fields([
                             HiddenIds::make(),

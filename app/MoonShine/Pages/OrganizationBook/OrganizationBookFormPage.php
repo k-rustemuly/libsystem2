@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Pages\OrganizationBook;
 
-use App\Models\BookStorageType;
-use App\Models\OrganizationBookInventory;
 use App\MoonShine\Resources\BookStorageTypeResource;
-use App\MoonShine\Resources\OrganizationBookInventoryResource;
-use App\MoonShine\Resources\ReceivedBookResource;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Fragment;
@@ -19,7 +15,6 @@ use MoonShine\Fields\Json;
 use MoonShine\Fields\Number;
 use MoonShine\Fields\Position;
 use MoonShine\Fields\Relationships\BelongsTo;
-use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Fields\Select;
 use MoonShine\Pages\Crud\FormPage;
 
@@ -52,9 +47,14 @@ class OrganizationBookFormPage extends FormPage
                         ->searchable()
                         ->required()
                         ->async(route('admin.books.search')),
+                    Number::make(__('moonshine::ui.resource.price'), 'price')
+                        ->min(0)
+                        ->placeholder(__('moonshine::ui.resource.price_placeholder'))
+                        ->buttons(),
                     Number::make(__('moonshine::ui.resource.book_count'), 'count')
                         ->min(1)
                         ->buttons()
+                        ->required()
                         ->default(1)
                 ])
                 ->sortable()
