@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\CustomModelRealation;
 use App\Traits\ModelPrefix;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,13 +12,14 @@ class OrganizationBookTransaction extends Model
 {
     use HasFactory;
     use ModelPrefix;
+    use CustomModelRealation;
 
     protected $fillable = [
-        'organization_book_id',
         'book_id',
         'inventory_id',
         'received_date',
         'return_date',
+        'returned_date',
         'comment'
     ];
 
@@ -35,14 +37,18 @@ class OrganizationBookTransaction extends Model
         return $this->morphTo();
     }
 
-    public function organizationBook(): BelongsTo
-    {
-        return $this->belongsTo(OrganizationBook::class);
-    }
+    // public function organizationBook(): BelongsTo
+    // {
+    //     return $this->belongsTo(OrganizationBook::class);
+    // }
 
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);
     }
 
+    public function inventory(): BelongsTo
+    {
+        return $this->customBelongsTo(new OrganizationBookInventory(['organization_id' => $this->getPrefix()]), 'inventory_id');
+    }
 }

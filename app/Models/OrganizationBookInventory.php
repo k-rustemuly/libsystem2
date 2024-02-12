@@ -15,9 +15,10 @@ class OrganizationBookInventory extends Model
     use ModelPrefix;
 
     protected $fillable = [
-        'organization_book_id',
+        // 'organization_book_id',
         'book_id',
         'num',
+        'price',
         'subnum',
         'code'
     ];
@@ -38,11 +39,11 @@ class OrganizationBookInventory extends Model
         return $model;
     }
 
-    public function generate(OrganizationBook $organizationBook, int $count)
+    public function generate(ReceivedBook $receivedBook, int $count, $price = null)
     {
         $num = 0;
 
-        if($organizationBook->book_storage_type_id == BookStorageType::BASIC) {
+        if($receivedBook->book_storage_type_id == BookStorageType::BASIC) {
             $last = $this->orderBy('num', 'desc')->first();
             if($last) {
                 $num = $last->num;
@@ -50,14 +51,14 @@ class OrganizationBookInventory extends Model
 
             while($count > 0) {
                 $data = [
-                    'organization_book_id' => $organizationBook->id,
-                    'book_id' => $organizationBook->book_id,
+                    'price' => $price,
+                    'book_id' => $receivedBook->book_id,
                 ];
                 if (! is_null($num)) {
                     $num++;
                     $data = array_merge($data, [
                         'num' => $num,
-                        'code' => sprintf('%05d-%010d', $organizationBook->organization_id, $num)
+                        'code' => sprintf('%05d-%010d', $receivedBook->organization_id, $num)
                     ]);
                 }
                 $this->create($data);
@@ -65,7 +66,7 @@ class OrganizationBookInventory extends Model
             }
         } else {
             $subnum = 0;
-            $last = $this->where('organization_book_id', $organizationBook->id)->orderBy('subnum', 'desc')->first();
+            $last = $this->where('book_id', $receivedBook->book_id)->orderBy('subnum', 'desc')->first();
             if($last) {
                 $num = $last->num;
                 $subnum = $last->subnum;
@@ -78,15 +79,15 @@ class OrganizationBookInventory extends Model
             }
             while($count > 0) {
                 $data = [
-                    'organization_book_id' => $organizationBook->id,
-                    'book_id' => $organizationBook->book_id,
+                    'price' => $price,
+                    'book_id' => $receivedBook->book_id,
                     'num' => $num,
                 ];
                 if (! is_null($subnum)) {
                     $subnum++;
                     $data = array_merge($data, [
                         'subnum' => $subnum,
-                        'code' => sprintf('%05d-%010d-%d', $organizationBook->organization_id, $num, $subnum)
+                        'code' => sprintf('%05d-%010d-%d', $this->organization_id, $num, $subnum)
                     ]);
                 }
                 $this->create($data);

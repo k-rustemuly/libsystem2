@@ -67,7 +67,7 @@ class OrganizationBookInventoryResource extends ModelResource
                                 ->required()
 
                         ])
-                        ->async()
+                        ->async(asyncEvents: ['table-updated-inventory'])
                 )
                 ->bulk()
                 ->primary()

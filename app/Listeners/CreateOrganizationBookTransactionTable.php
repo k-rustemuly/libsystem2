@@ -21,9 +21,6 @@ class CreateOrganizationBookTransactionTable implements ShouldQueue
             Schema::create($tableName, function (Blueprint $table) {
                 $table->id();
 
-                $table->foreignIdFor(OrganizationBook::class)
-                    ->constrained();
-
                 $table->foreignIdFor(Book::class)
                     ->constrained();
 
@@ -34,6 +31,8 @@ class CreateOrganizationBookTransactionTable implements ShouldQueue
                 $table->date('received_date');
 
                 $table->date('return_date');
+
+                $table->date('returned_date')->nullable();
 
                 $table->string('comment', 255)->nullable();
 

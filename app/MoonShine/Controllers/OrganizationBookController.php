@@ -50,7 +50,7 @@ final class OrganizationBookController extends MoonShineController
             ->get()
             ->each(function($item) use($reader, $dates) {
                 $receivedBook = new OrganizationBookTransaction(['organization_id' => session('selected_admin')?->organization_id]);
-                $receivedBook->organizationBook()->associate($item->organization_book_id);
+                // $receivedBook->organizationBook()->associate($item->organization_book_id);
                 $receivedBook->book()->associate($item->book_id);
                 $receivedBook->recipientable()->associate($reader);
                 $receivedBook->inventory_id = $item->id;

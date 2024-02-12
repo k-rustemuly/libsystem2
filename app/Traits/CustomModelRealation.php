@@ -51,6 +51,27 @@ trait CustomModelRealation
             $instance->newQuery(), $this, $foreignKey, $ownerKey, $relation
         );
     }
-    //public function belongsTo(BookStorageType::class);
 
+    /**
+     * Define a polymorphic one-to-many relationship.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $instance
+     * @param  string  $name
+     * @param  string|null  $type
+     * @param  string|null  $id
+     * @param  string|null  $localKey
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function customMorphMany(Model $instance, $name, $type = null, $id = null, $localKey = null)
+    {
+        // Here we will gather up the morph type and ID for the relationship so that we
+        // can properly query the intermediate table of a relation. Finally, we will
+        // get the table and create the relationship instances for the developers.
+        [$type, $id] = $this->getMorphs($name, $type, $id);
+
+        $table = $instance->getTable();
+
+        $localKey = $localKey ?: $this->getKeyName();
+        return $this->newMorphMany($instance->newQuery(), $this, $table.'.'.$type, $table.'.'.$id, $localKey);
+    }
 }

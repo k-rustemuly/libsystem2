@@ -23,11 +23,11 @@ class CreateOrganizationBookInventoryTable implements ShouldQueue
             Schema::create($tableName, function (Blueprint $table) {
                 $table->id();
 
-                $table->foreignIdFor(OrganizationBook::class)
-                    ->constrained();
-
                 $table->foreignIdFor(Book::class)
                     ->constrained();
+
+                $table->decimal('price', 10, 2)
+                    ->nullable();
 
                 $table->unsignedBigInteger('num')
                     ->nullable()

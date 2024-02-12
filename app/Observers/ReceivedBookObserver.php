@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\OrganizationBook;
+use App\Models\OrganizationBookInventory;
 use App\Models\ReceivedBook;
 
 class ReceivedBookObserver
@@ -26,5 +27,6 @@ class ReceivedBookObserver
         );
         $book->count+=$receivedBook->count;
         $book->save();
+        (new OrganizationBookInventory(['organization_id' => $receivedBook->organization_id]))->generate($receivedBook, (int) $receivedBook->count, $receivedBook->price);
     }
 }

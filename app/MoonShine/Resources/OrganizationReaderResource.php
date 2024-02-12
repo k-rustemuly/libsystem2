@@ -22,6 +22,7 @@ use MoonShine\Pages\Crud\IndexPage;
 
 class OrganizationReaderResource extends ModelResource
 {
+
     protected string $model = OrganizationReader::class;
 
     protected array $with = [
@@ -37,9 +38,12 @@ class OrganizationReaderResource extends ModelResource
 
     public function query(): Builder
     {
+        if ($this->isNowOnDetail()) {
+            return parent::query();
+        }
+
         return parent::query()
             ->where('organization_id', session('selected_admin')?->organization_id);
-
     }
 
     public function fields(): array
