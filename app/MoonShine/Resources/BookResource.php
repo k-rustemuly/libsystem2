@@ -6,6 +6,7 @@ namespace App\MoonShine\Resources;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Book;
+use App\Models\Role;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Decorations\Block;
@@ -26,7 +27,12 @@ class BookResource extends ModelResource
         'schoolClass',
         'binding',
     ];
-
+    public function getActiveActions(): array
+    {
+        if(session('selected_admin')->role_id == Role::LIBRARIAN)
+            return ['view'];
+        return ['create', 'view', 'update', 'delete', 'massDelete'];
+    }
     public function title(): string
     {
         return __('moonshine::ui.resource.books');

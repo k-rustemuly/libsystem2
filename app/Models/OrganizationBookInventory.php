@@ -87,7 +87,7 @@ class OrganizationBookInventory extends Model
                     $subnum++;
                     $data = array_merge($data, [
                         'subnum' => $subnum,
-                        'code' => sprintf('%05d-%010d-%d', $this->organization_id, $num, $subnum)
+                        'code' => sprintf('%05d-%010d-%d', $receivedBook->organization_id, $num, $subnum)
                     ]);
                 }
                 $this->create($data);
@@ -99,5 +99,10 @@ class OrganizationBookInventory extends Model
     public function transaction(): BelongsTo
     {
         return $this->customBelongsTo(new OrganizationBookTransaction(['organization_id' => $this->getPrefix()]), 'transaction_id');
+    }
+
+    public function book(): BelongsTo
+    {
+        return $this->belongsTo(Book::class);
     }
 }

@@ -70,8 +70,21 @@ class OrganizationBookInventoryResource extends ModelResource
                         ->async(asyncEvents: ['table-updated-inventory'])
                 )
                 ->bulk()
-                ->primary()
+                ->success()
                 ->icon('heroicons.arrow-up-tray'),
+
+            ActionButton::make(__('moonshine::ui.resource.print'), item: $this->getModel())
+                ->inModal(
+                    title: __('moonshine::ui.resource.print'),
+                    content: fn (): string => (string) FormBuilder::make($this->route('organization_book.print', $this->uriKey()))
+                        ->submit(__('moonshine::ui.resource.to_print'), ['class' => 'btn-primary btn-lg'])
+                        ->fields([
+                            HiddenIds::make(),
+                        ])
+                )
+                ->bulk()
+                ->primary()
+                ->icon('heroicons.printer'),
         ];
     }
 
@@ -80,6 +93,7 @@ class OrganizationBookInventoryResource extends ModelResource
         parent::resolveRoutes();
 
         Route::post('/organization-book/receive', [OrganizationBookController::class, 'receive'])->name('organization_book.receive');
+        Route::post('/organization-book/print', [OrganizationBookController::class, 'print'])->name('organization_book.print');
     }
 
 }

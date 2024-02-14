@@ -21,6 +21,7 @@ final class OrganizationBookTransactionController extends MoonShineController
                 $transaction->returned_date = $request->returned_date;
                 $transaction->comment = $request->comment;
                 $transaction->save();
+
                 return response()
                     ->json(
                         [
