@@ -70,6 +70,10 @@ class BookResource extends ModelResource
                     ->required()
                     ->searchable(),
 
+                BelongsTo::make(__('moonshine::ui.resource.binding'), 'binding', fn($item) => "$item->name", new BindingResource())
+                    ->required()
+                    ->searchable(),
+
                 BelongsTo::make(__('moonshine::ui.resource.language'), 'language', fn($item) => "$item->name", new LanguageResource())
                     ->required()
                     ->searchable(),
