@@ -20,7 +20,9 @@ class OrganizationBookInventory extends Model
         'num',
         'price',
         'subnum',
-        'code'
+        'code',
+        'received_book_id',
+        'organization_book_status_id'
     ];
 
     public function __construct(array $attributes = [])
@@ -53,6 +55,7 @@ class OrganizationBookInventory extends Model
                 $data = [
                     'price' => $price,
                     'book_id' => $receivedBook->book_id,
+                    'received_book_id' => $receivedBook->id,
                 ];
                 if (! is_null($num)) {
                     $num++;
@@ -82,6 +85,7 @@ class OrganizationBookInventory extends Model
                     'price' => $price,
                     'book_id' => $receivedBook->book_id,
                     'num' => $num,
+                    'received_book_id' => $receivedBook->id,
                 ];
                 if (! is_null($subnum)) {
                     $subnum++;

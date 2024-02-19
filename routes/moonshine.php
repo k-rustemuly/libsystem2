@@ -24,9 +24,13 @@ Route::prefix('admin')
 
                 Route::get('search', [BookController::class, 'search'])->name('search');
 
+                Route::get('search/inventory', [BookController::class, 'searchByInventory'])->name('search.inventory');
+
                 Route::post('accept', [OrganizationBookTransactionController::class, 'accept'])
                     ->name('accept');
 
+                Route::post('mass-receive', [OrganizationBookTransactionController::class, 'massReceive'])
+                    ->name('mass.receive');
             });
 
     });

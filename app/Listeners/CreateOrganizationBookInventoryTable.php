@@ -5,6 +5,8 @@ namespace App\Listeners;
 use App\Events\OrganizationCreated;
 use App\Models\Book;
 use App\Models\OrganizationBook;
+use App\Models\OrganizationBookStatus;
+use App\Models\ReceivedBook;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -26,6 +28,8 @@ class CreateOrganizationBookInventoryTable implements ShouldQueue
                 $table->foreignIdFor(Book::class)
                     ->constrained();
 
+                $table->foreignIdFor(ReceivedBook::class);
+
                 $table->decimal('price', 10, 2)
                     ->nullable();
 
@@ -42,6 +46,10 @@ class CreateOrganizationBookInventoryTable implements ShouldQueue
 
                 $table->foreignId('transaction_id')
                     ->nullable();
+
+                $table->foreignIdFor(OrganizationBookStatus::class)
+                    ->default(1);
+
                 $table->timestamps();
             });
         }

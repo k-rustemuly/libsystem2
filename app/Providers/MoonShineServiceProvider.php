@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Models\Role;
 use App\MoonShine\Pages\ChooseRole;
+use App\MoonShine\Pages\IssueBookPage;
 use App\MoonShine\Resources\AdminResource;
 use App\MoonShine\Resources\BindingResource;
 use App\MoonShine\Resources\BookResource;
@@ -90,6 +91,9 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
                 ->canSee(fn() => session('selected_admin')->role_id == Role::LIBRARIAN),
 
             MenuItem::make(__('moonshine::ui.resource.readers'), new OrganizationReaderResource())
+                ->canSee(fn() => session('selected_admin')->role_id == Role::LIBRARIAN),
+
+            MenuItem::make(__('moonshine::ui.resource.issue_book'), new IssueBookPage())
                 ->canSee(fn() => session('selected_admin')->role_id == Role::LIBRARIAN),
 
             MenuGroup::make(static fn() => __('moonshine::ui.resource.system'), [

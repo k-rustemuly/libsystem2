@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             BookStorageTypeSeeder::class,
+            OrganizationBookStatusesSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
 
