@@ -49,29 +49,29 @@ class OrganizationBookInventoryResource extends ModelResource
     public function indexButtons(): array
     {
         return [
-            ActionButton::make(__('moonshine::ui.resource.receive_to_reader'), item: $this->getModel())
-                ->inModal(
-                    title: __('moonshine::ui.resource.receive_to_reader'),
-                    content: fn (): string => (string) FormBuilder::make($this->route('organization_book.receive', $this->uriKey()))
-                        ->submit(__('moonshine::ui.resource.receive'), ['class' => 'btn-primary btn-lg'])
-                        ->fields([
-                            HiddenIds::make(),
+            // ActionButton::make(__('moonshine::ui.resource.receive_to_reader'), item: $this->getModel())
+            //     ->inModal(
+            //         title: __('moonshine::ui.resource.receive_to_reader'),
+            //         content: fn (): string => (string) FormBuilder::make($this->route('organization_book.receive', $this->uriKey()))
+            //             ->submit(__('moonshine::ui.resource.receive'), ['class' => 'btn-primary btn-lg'])
+            //             ->fields([
+            //                 HiddenIds::make(),
 
-                            Select::make('Читатель', 'user_id')
-                                ->searchable()
-                                ->required()
-                                ->async(asyncUrl: route('moonshine.users.search', [$this->uriKey()])),
+            //                 Select::make('Читатель', 'user_id')
+            //                     ->searchable()
+            //                     ->required()
+            //                     ->async(asyncUrl: route('moonshine.users.search', [$this->uriKey()])),
 
-                            DateRange::make('Дата выдачи и возврата', 'date')
-                                ->fromTo('received_date', 'return_date')
-                                ->required()
+            //                 DateRange::make('Дата выдачи и возврата', 'date')
+            //                     ->fromTo('received_date', 'return_date')
+            //                     ->required()
 
-                        ])
-                        ->async(asyncEvents: ['table-updated-inventory'])
-                )
-                ->bulk()
-                ->success()
-                ->icon('heroicons.arrow-up-tray'),
+            //             ])
+            //             ->async(asyncEvents: ['table-updated-inventory'])
+            //     )
+            //     ->bulk()
+            //     ->success()
+            //     ->icon('heroicons.arrow-up-tray'),
 
             ActionButton::make(__('moonshine::ui.resource.print'), item: $this->getModel())
                 ->inModal(

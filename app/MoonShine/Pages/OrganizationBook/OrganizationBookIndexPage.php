@@ -18,8 +18,8 @@ use MoonShine\Decorations\Fragment;
 use MoonShine\Decorations\Grid;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Fields\Hidden;
+use MoonShine\Fields\ID;
 use MoonShine\Fields\Preview;
-use MoonShine\Fields\Image;
 use MoonShine\Pages\Crud\IndexPage;
 
 class OrganizationBookIndexPage extends IndexPage
@@ -27,10 +27,11 @@ class OrganizationBookIndexPage extends IndexPage
     public function fields(): array
     {
         return [
-            Image::make('book.cover'),
-            Preview::make('bookStorageType', 'bookStorageType', fn($item) => $item->bookStorageType->name)->badge(fn($item) => $item->id == 1 ? 'green' : 'info'),
-            Hidden::make('book.name'),
-            Hidden::make('book.isbn'),
+            ID::make(),
+            // Image::make('book.cover'),
+            Preview::make(__('moonshine::ui.resource.book_storage_type'), 'bookStorageType', fn($item) => $item->bookStorageType->name)->badge(fn($item) => $item->id == 1 ? 'green' : 'info'),
+            Hidden::make(__('moonshine::ui.resource.book'), 'book.name'),
+            Hidden::make('ISBN', 'book.isbn'),
             Hidden::make(__('moonshine::ui.resource.count'), 'count'),
             Hidden::make(__('moonshine::ui.resource.category'), 'book.category.name'),
             Hidden::make(__('moonshine::ui.resource.published_year'), 'book.published_year'),
@@ -50,7 +51,7 @@ class OrganizationBookIndexPage extends IndexPage
 
     protected function mainLayer(): array
     {
-        return [...$this->filtersForm(), ...$this->actionButtons(), ...$this->queryTags(), ...$this->cards()];
+        return [...$this->filtersForm(), ...$this->actionButtons(), ...$this->queryTags(), ...$this->table()];
     }
 
     protected function cards(): array

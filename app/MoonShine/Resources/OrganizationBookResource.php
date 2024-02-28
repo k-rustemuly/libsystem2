@@ -66,6 +66,18 @@ class OrganizationBookResource extends ModelResource
         return [];
     }
 
+    public function search(): array
+    {
+        return [
+            'book.name',
+            'book.isbn',
+            'book.authors',
+            'bookStorageType.name_ru',
+            'bookStorageType.name_kk',
+            'count',
+        ];
+    }
+
     public function actions(): array
     {
         return [

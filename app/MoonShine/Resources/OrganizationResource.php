@@ -9,6 +9,7 @@ use App\Models\Organization;
 use Illuminate\Validation\Rule;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Decorations\Block;
+use MoonShine\Enums\PageType;
 use MoonShine\Fields\Date;
 use MoonShine\Fields\Hidden;
 use MoonShine\Fields\ID;
@@ -18,6 +19,8 @@ use MoonShine\Fields\Text;
 class OrganizationResource extends ModelResource
 {
     protected string $model = Organization::class;
+
+    protected ?PageType $redirectAfterSave = PageType::INDEX;
 
     public array $with = ['organizationType'];
 
