@@ -7,6 +7,8 @@ namespace App\MoonShine\Resources;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ReceivedBook;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\FormBuilder;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Decorations\Block;
 use MoonShine\Fields\Hidden;
@@ -85,5 +87,25 @@ class ReceivedBookResource extends ModelResource
     public function search(): array
     {
         return $this->search;
+    }
+
+    public function indexButtons(): array
+    {
+        return [
+
+            ActionButton::make('', item: $this->getModel())
+                ->inModal(
+                    title: __('moonshine::ui.resource.print'),
+                    content: fn (): string => (string) FormBuilder::make(
+                            $this->route('organization_book.print', $this->uriKey())
+                        )
+                        ->submit(__('moonshine::ui.resource.to_print'), ['class' => 'btn-primary btn-lg'])
+                        ->fields([
+                            Hidden::make('id')->setValue($this->getItem()->id),
+                        ])
+                )
+                ->primary()
+                ->icon('heroicons.printer'),
+        ];
     }
 }

@@ -66,7 +66,11 @@ final class OrganizationBookController extends MoonShineController
     public function print(MoonShineRequest $request)
     {
         $inventories = new OrganizationBookInventory(['organization_id' => session('selected_admin')?->organization_id]);
-        $inventories = $inventories->whereIn('id', $request->ids)->with('book')->get();
+        if($request->ids) {
+            $inventories = $inventories->whereIn('id', $request->ids)->with('book')->get();
+        } else {
+            $inventories = $inventories->where('received_book_id', $request->id)->with('book')->get();
+        }
         $datas = [];
         $generator = new BarcodeGeneratorPNG();
         foreach($inventories as $inventory) {
@@ -83,5 +87,18 @@ final class OrganizationBookController extends MoonShineController
         // $page->render();
         $pdf = Pdf::loadView('label', compact('datas'))->setPaper([0.0, 0.0, 163.78, 113.39]);
         return $pdf->download('document.pdf');
+    }
+
+    public function delete($uri, $id): Response
+    {
+        $transactions = new OrganizationBookTransaction(['organization_id' => session('selected_admin')?->organization_id]);
+        if(! $transactions->where('inventory_id', $id)->exists()) {
+            $inventories = new OrganizationBookInventory(['organization_id' => session('selected_admin')?->organization_id]);
+            $inventory = $inventories->find($id);
+            $inventory->delete();
+            return $this->json(__('moonshine::ui.deleted'));
+        } else {
+            return $this->json(__('moonshine::ui.errors.inventory_delete'), messageType: 'error');
+        }
     }
 }

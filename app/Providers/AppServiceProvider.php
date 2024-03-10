@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Models\Organization;
 use App\Models\OrganizationBook;
+use App\Models\OrganizationBookInventory;
 use App\Models\OrganizationBookTransaction;
 use App\Models\OrganizationReader;
 use App\Models\ReceivedBook;
+use App\Observers\OrganizationBookInventoryObserver;
 use App\Observers\OrganizationBookObserver;
 use App\Observers\OrganizationBookTransactionObserver;
 use App\Observers\OrganizationObserver;
@@ -34,5 +36,6 @@ class AppServiceProvider extends ServiceProvider
         Organization::observe(OrganizationObserver::class);
         OrganizationBookTransaction::observe(OrganizationBookTransactionObserver::class);
         OrganizationReader::observe(OrganizationReaderObserver::class);
+        OrganizationBookInventory::observe(OrganizationBookInventoryObserver::class);
     }
 }

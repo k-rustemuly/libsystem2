@@ -29,4 +29,23 @@ class ReceivedBookObserver
         $book->save();
         (new OrganizationBookInventory(['organization_id' => $receivedBook->organization_id]))->generate($receivedBook, (int) $receivedBook->count, $receivedBook->price);
     }
+
+    public function updated(ReceivedBook $receivedBook)
+    {
+        $original = $receivedBook->getOriginal();
+        if($original["count"] > $receivedBook->count) {
+            $organizationBook = OrganizationBook::where('organization_id', $receivedBook->organization_id)->where('book_id', $receivedBook->book_id)->first();
+            $organizationBook->count-=1;
+            $organizationBook->save();
+
+            if($receivedBook->price) {
+                $receivedBook->total = $receivedBook->price * $receivedBook->count;
+            }
+        }
+        if($receivedBook->count == 0) {
+            $receivedBook->delete();
+        }
+    }
+
+
 }

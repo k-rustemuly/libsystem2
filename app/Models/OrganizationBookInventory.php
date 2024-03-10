@@ -109,4 +109,9 @@ class OrganizationBookInventory extends Model
     {
         return $this->belongsTo(Book::class);
     }
+
+    public function receivedBook(): BelongsTo
+    {
+        return $this->belongsTo(ReceivedBook::class);
+    }
 }
