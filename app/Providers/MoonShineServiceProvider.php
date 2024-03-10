@@ -96,6 +96,21 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
             MenuItem::make(__('moonshine::ui.resource.issue_book'), new IssueBookPage())
                 ->canSee(fn() => session('selected_admin')->role_id == Role::LIBRARIAN),
 
+            MenuItem::make(__('moonshine::ui.resource.book_exchange'), '#', 'heroicons.lock-closed')
+                ->canSee(fn() => session('selected_admin')->role_id == Role::LIBRARIAN),
+
+            MenuItem::make(__('moonshine::ui.resource.event_plan'), '#', 'heroicons.lock-closed')
+                ->canSee(fn() => session('selected_admin')->role_id == Role::LIBRARIAN),
+
+            MenuItem::make(__('moonshine::ui.resource.reports'), '#', 'heroicons.lock-closed')
+                ->canSee(fn() => session('selected_admin')->role_id == Role::LIBRARIAN),
+
+            MenuItem::make(__('moonshine::ui.resource.reader_orders'), '#', 'heroicons.lock-closed')
+                ->canSee(fn() => session('selected_admin')->role_id == Role::LIBRARIAN),
+
+            MenuItem::make(__('moonshine::ui.resource.writing_off_books'), '#', 'heroicons.lock-closed')
+                ->canSee(fn() => session('selected_admin')->role_id == Role::LIBRARIAN),
+
             MenuGroup::make(static fn() => __('moonshine::ui.resource.system'), [
                 MenuItem::make(
                     static fn() => __('moonshine::ui.resource.admins_title'),

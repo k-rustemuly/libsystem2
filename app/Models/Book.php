@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -35,7 +36,7 @@ class Book extends Model implements HasMedia
 
     public function getCoverAttribute()
     {
-        return 'https://www.bookgeeks.in/wp-content/uploads/2023/10/Vikram-and-Betal-Life-lessons-for-Our-Times-by-Neelam-Kumar.jpg';
+        return asset('book.jpg');
         return $this->getFirstMediaUrl('cover');
     }
 
